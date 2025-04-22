@@ -69,7 +69,7 @@ return {
     formatting = {
       -- control auto formatting on save
       format_on_save = {
-        enabled = true, -- enable or disable format on save globally
+        enabled = false, -- enable or disable format on save globally
         allow_filetypes = { -- enable format on save for specified filetypes only
           -- "go",
         },
@@ -197,6 +197,16 @@ return {
         ["<leader>fW"] = {
           function() require("telescope.builtin").grep_string { search = vim.fn.expand "<cWORD>" } end,
           desc = "[F]ind [W]ord (under cursor)",
+        },
+        gi = {
+          function() require("telescope.builtin").lsp_implementations() end,
+          desc = "[G]o to [I]mplementations",
+          cond = "textDocument/implementation",
+        },
+        gr = {
+          function() require("telescope.builtin").lsp_references() end,
+          desc = "[G]o to [R]eferences",
+          cond = "textDocument/references",
         },
 
         -- disable
