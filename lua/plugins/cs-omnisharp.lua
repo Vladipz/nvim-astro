@@ -17,34 +17,6 @@ function setup_c_sharp(dap)
   }
 end
 
-function setup_xaml_support()
-  -- Define path to Avalonia LSP binary
-  local avalonia_lsp_bin =
-    "C:\\Users\\Vlad\\.vscode\\extensions\\avaloniateam.vscode-avalonia-0.0.32\\avaloniaServer\\AvaloniaLanguageServer.dll" -- Update this path!
-
-  -- Create autocommands for XAML files
-  vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-    pattern = "*.xaml",
-    callback = function()
-      vim.opt_local.filetype = "xml"
-      vim.opt_local.omnifunc = "xaml#complete"
-    end,
-  })
-
-  -- Create autocommands for Avalonia AXAML files
-  vim.api.nvim_create_autocmd({ "BufNewFile", "BufRead" }, {
-    pattern = "*.xaml",
-    callback = function()
-      vim.cmd.setfiletype "xml"
-      vim.lsp.start {
-        name = "Avalonia LSP",
-        cmd = { "dotnet", avalonia_lsp_bin },
-        root_dir = vim.fn.getcwd(),
-      }
-    end,
-  })
-end
-
 return {
   -- CSharp support
   {
@@ -124,9 +96,6 @@ return {
   -- Initialize the XAML support
   {
     "AstroNvim/astrocore",
-    config = function(plugin, opts)
-      require("astrocore").setup(opts)
-      setup_xaml_support() -- Call it after plugin setup
-    end,
+    config = function(plugin, opts) require("astrocore").setup(opts) end,
   },
 }
